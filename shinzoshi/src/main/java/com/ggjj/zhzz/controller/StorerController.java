@@ -63,7 +63,7 @@ public class StorerController {
 	@RequestMapping(value = "/findAll")
 	@ResponseBody
 	public DatagridResult findAll(StorerRequestVo requestVo) {
-		return storerService.findAll(requestVo);
+		return storerService.findStorersByPage(requestVo);
 
 	}
 

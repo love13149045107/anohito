@@ -1,6 +1,5 @@
 ﻿<%@ page language="java" import="java.util.*"  contentType="text/html;charset=UTF-8"%>
 
-<link rel="stylesheet" type="text/css" href="css/storer.css" />
 <div id="storerAddDiv">
 	<form id="storeAddForm" enctype="multipart/form-data"  method="post">
 		<div>

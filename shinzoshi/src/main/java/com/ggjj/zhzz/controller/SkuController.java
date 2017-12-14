@@ -11,10 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ggjj.zhzz.pojo.Sku;
+import com.ggjj.zhzz.pojo.Storer;
 import com.ggjj.zhzz.service.SkuService;
 import com.ggjj.zhzz.service.StorerService;
+import com.ggjj.zhzz.utils.DatagridResult;
+import com.ggjj.zhzz.utils.HandResult;
+import com.ggjj.zhzz.vo.SkuRequestVo;
 
 
 @Controller
@@ -27,53 +32,57 @@ public class SkuController {
 	@Autowired
 	private StorerService storerService;
 
-	@RequestMapping("/toInsertSkuPage")
-	public void toInsertSkuPage(HttpServletResponse response,
-			HttpServletRequest request) throws ServletException, IOException {
-		//request.setAttribute("list", storerService.findAll());
-		request.getRequestDispatcher("/jsp/sku/insertSku.jsp").forward(request,
-				response);
-
+	@RequestMapping("/toinsert")
+	public String toInsert() {
+		return "sku/sku-add";
 	}
 
 	@RequestMapping(value = "/insert")
-	public String insert(Sku sku) {
-		skuService.insert(sku);
-		return "redirect:/sku/findAll";
+	@ResponseBody
+	public HandResult insert(Sku sku) {
+		HandResult result = skuService.insert(sku);
+		return result;
 	}
 
-	@RequestMapping("/toUpdateSkuPage/{sku}")
-	public void toUpdateStorerPage(@PathVariable("sku") Integer skuid,
-			HttpServletResponse response, HttpServletRequest request)
-			throws ServletException, IOException {
-		Sku sku = skuService.findSkuBySku(skuid);
-		request.setAttribute("sku", sku);
-		//request.setAttribute("list", storerService.findAll());
-
-		request.getRequestDispatcher("/jsp/sku/updateSku.jsp").forward(request,
-				response);
-
+	@RequestMapping("/toedit")
+	public String toUpdateStorerPage(){
+		return "sku/sku-edit";
+		
 	}
 
-	@RequestMapping(value = "/update")
-	public String update(Sku sku) {
-		skuService.update(sku);
-		return "redirect:/sku/findAll";
+	@RequestMapping(value = "/edit")
+	@ResponseBody
+	public HandResult update(Sku sku) {
+		HandResult result = skuService.update(sku);
+		return result;
 	}
 
-	@RequestMapping(value = "/delete/{sku}")
-	public String delete(@PathVariable Integer sku) {
-		skuService.delete(sku);
-		return "redirect:/sku/findAll";
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public HandResult delete(String ids) {
+		HandResult result = skuService.delete(ids);
+		return result;
 	}
 
 	@RequestMapping(value = "/findAll")
-	public void findAll(HttpServletRequest request, HttpServletResponse response)
+	@ResponseBody
+	public DatagridResult findAll(SkuRequestVo requestVo)
 			throws ServletException, IOException {
-		//List<Sku> list = skuService.findAll();
-		request.setAttribute("list", null);
-		request.getRequestDispatcher("/jsp/sku/sku.jsp").forward(request,
-				response);
+		DatagridResult result = skuService.findAll(requestVo);
+		return result;
+		
+	}
+	@RequestMapping(value = "/sku")
+	public String sku(){
+		return "sku/sku";
+		
+	}
+	//获取全部货主
+	@RequestMapping(value = "/findStores")
+	@ResponseBody
+	public List<Storer> findStores() {
+		System.out.println("---------------");
+		return storerService.findStores();
 
 	}
 

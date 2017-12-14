@@ -53,19 +53,24 @@ public class StorerService {
 		storerMapper.insert(storer);
 		return HandResult.ok();
 	}
-
-	public DatagridResult findAll(StorerRequestVo requestVo) {
+	
+	/**
+	 * 分页查询货主
+	 * @param requestVo
+	 * @return
+	 */
+	public DatagridResult findStorersByPage(StorerRequestVo requestVo) {
 		 //设置分页信息
         PageHelper.startPage(requestVo.getPage(), requestVo.getRows());
 		StorerExample example = new StorerExample();
 		 //执行查询
-        List<Storer> industries = storerMapper.selectByExample(example);
+        List<Storer> storers = storerMapper.selectByExample(example);
         //获取分页信息
-        PageInfo<Storer> pageInfo = new PageInfo<Storer>(industries);
+        PageInfo<Storer> pageInfo = new PageInfo<Storer>(storers);
         //创建返回结果
         DatagridResult datagridResult = new DatagridResult();
         datagridResult.setTotal(pageInfo.getTotal());
-        datagridResult.setRows(industries);
+        datagridResult.setRows(storers);
         //返回查询结果集
 		return datagridResult;
 	}
@@ -73,6 +78,15 @@ public class StorerService {
 	public Storer findStorerByStorerkey(Integer storerkey) {
 		//根据主键查询单个对象
 		return storerMapper.selectByPrimaryKey(storerkey);
+	}
+	/**
+	 * 查询所有货主
+	 * @return
+	 */
+	public List<Storer> findStores() {
+		StorerExample example = new StorerExample();
+		List<Storer> list = storerMapper.selectByExample(example);
+		return list;
 	}
 
 }

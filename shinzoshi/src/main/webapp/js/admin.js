@@ -36,7 +36,7 @@ $(function () {
 			    		    text: "货品列表",
 			    		    state: "open",
 			    		    iconCls: "icon-group",
-			    		    url: "sku/findAll"
+			    		    url: "sku/sku"
 			    	   	}
 			    	   ]
 			},{

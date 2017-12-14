@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="css/admin.css" />
+<link rel="stylesheet" type="text/css" href="css/storer.css" />
 </head>
 <body class="easyui-layout">
 

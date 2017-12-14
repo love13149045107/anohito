@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<table class="easyui-datagrid" id="storerDg" title="商品列表" 
+<table class="easyui-datagrid" id="storerDg" title="货主列表" 
        data-options="singleSelect:false,fit:true,fitColumns:true,collapsible:true,pagination:true,url:'/storer/findAll',method:'get',toolbar:toolbar">
     <thead>
         <tr>

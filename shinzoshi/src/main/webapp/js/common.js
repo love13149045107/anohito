@@ -41,8 +41,10 @@ var E3 = {
 		}
 		return "";
 	},
-
-    
+	// 格式化价格
+	formatPrice : function(val,row){
+		return val.toFixed(2);
+	},
     init : function(){
     	// 初始化图片上传组件
     	this.initPicUpload(data);
