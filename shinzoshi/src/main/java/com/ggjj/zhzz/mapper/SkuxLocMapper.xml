@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ggjj.zhzz.mapper.SkuxLocMapper" >
+  
+  <select id="findSkuxLoc" resultType="com.ggjj.zhzz.pojo.SkuxLoc" >
+	SELECT sku.sku sku,sku.name name,loc.loc loc,loc.quantity quantity FROM loc,sku WHERE loc.loc=sku.loc
+  </select>
+  
+</mapper>
