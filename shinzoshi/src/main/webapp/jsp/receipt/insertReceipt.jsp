@@ -52,37 +52,6 @@
 			<td><input type="text" name="receipt.comment"></td>
 		</tr>
 
-     	<tr>
-			<td>货品编码:</td>
-			<td><input type="text" name="sku"></td>
-		</tr>
-		<tr>
-			<td>数量:</td>
-			<td><input type="text" name="quantity"></td>
-		</tr>
-		<tr>
-			<td>货品名称:</td>
-			<td><input type="text" name="name"></td>
-		</tr>
-		<tr>
-			<td>货品类型:</td>
-			<td><input type="text" name="category"></td>
-		</tr>
-		<tr>
-			<td>重量:</td>
-			<td><input type="text" name="weight"></td>
-		</tr>
-		<tr>
-			<td>收货库位:</td>
-			<td>
-				<select name="loc">
-					<c:forEach var="loc" items="${list }">
-						<option value="${loc.loc }">${loc.loc }</option>
-					</c:forEach>
-				</select>
-			</td>
-		</tr>
-
 		<tr>
 			<td>
 				<input type="submit" value="创建">

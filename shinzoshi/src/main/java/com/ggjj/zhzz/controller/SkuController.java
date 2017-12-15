@@ -66,8 +66,7 @@ public class SkuController {
 
 	@RequestMapping(value = "/findAll")
 	@ResponseBody
-	public DatagridResult findAll(SkuRequestVo requestVo)
-			throws ServletException, IOException {
+	public DatagridResult findAll(SkuRequestVo requestVo){
 		DatagridResult result = skuService.findAll(requestVo);
 		return result;
 		

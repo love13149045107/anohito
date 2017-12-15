@@ -36,8 +36,8 @@ public class ReceiptdetailController {
 		request.setAttribute("list", receiptdetailService
 				.findReceiptdetailByStorerkey(storerkey));
 		request.setAttribute("storerkey", storerkey);
-		request.setAttribute("status", receiptService.findReceiptByPrimaryKey(
-				storerkey).getStatus());
+		/*request.setAttribute("status", receiptService.findReceiptByPrimaryKey(
+				storerkey).getStatus());*/
 		request.getRequestDispatcher("/jsp/receiptdetail/receiptdetail.jsp")
 				.forward(request, response);
 

@@ -81,5 +81,11 @@
         	    }
         	});
         }
+    },{
+        text:'取消',
+        iconCls:'icon-undo',
+        handler:function(){
+        	$("#storerDg").datagrid('clearChecked');
+        }
     }];
 </script>

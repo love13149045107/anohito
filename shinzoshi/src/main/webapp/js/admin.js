@@ -48,7 +48,7 @@ $(function () {
 			    		    text: "库位列表",
 			    		    state: "open",
 			    		    iconCls: "icon-group",
-			    		    url: "loc/findAll"
+			    		    url: "loc/loc"
 			    	   	}
 			    	   ]
 			},{
@@ -60,7 +60,7 @@ $(function () {
 			    		    text: "收货单列表",
 			    		    state: "open",
 			    		    iconCls: "icon-edit",
-			    		    url: "receipt/findAll"
+			    		    url: "receipt/receipt"
 			    	   	}
 			    	   ]
 			},{

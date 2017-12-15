@@ -11,9 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ggjj.zhzz.pojo.Loc;
 import com.ggjj.zhzz.service.LocService;
+import com.ggjj.zhzz.utils.DatagridResult;
+import com.ggjj.zhzz.utils.HandResult;
+import com.ggjj.zhzz.vo.LocRequestVo;
 
 
 @Controller
@@ -24,42 +28,47 @@ public class LocController {
 	private LocService locService;
 
 	@RequestMapping(value = "/findAll")
-	public void findAll(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		List<Loc> list = locService.findAll();
-		request.setAttribute("list", list);
-		request.getRequestDispatcher("/jsp/loc/loc.jsp").forward(request,
-				response);
+	@ResponseBody
+	public DatagridResult findAll(LocRequestVo requestVo){
+		DatagridResult result = locService.findAll(requestVo);
+		return result;
 
 	}
 
-	@RequestMapping(value = "/delete/{loc}")
-	public String delete(@PathVariable Integer loc) {
-		locService.delete(loc);
-		return "redirect:/loc/findAll";
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public HandResult delete(String ids) {
+		HandResult result = locService.delete(ids);
+		return result;
 	}
 
 	@RequestMapping(value = "/insert")
-	public String insert(Loc loc) {
-		locService.insert(loc);
-		return "redirect:/loc/findAll";
+	@ResponseBody
+	public HandResult insert(Loc loc) {
+		HandResult result = locService.insert(loc);
+		return result;
+	}
+	@RequestMapping(value = "/toinsert")
+	public String toinsert() {
+		return "loc/loc-add";
 	}
 
-	@RequestMapping("/toUpdateLocPage/{loc}")
-	public void toUpdateLocPage(@PathVariable("loc") Integer locid,
-			HttpServletResponse response, HttpServletRequest request)
-			throws ServletException, IOException {
-		Loc loc = locService.findLocByLoc(locid);
-		request.setAttribute("loc", loc);
-		request.getRequestDispatcher("/jsp/loc/updateLoc.jsp").forward(request,
-				response);
-
+	@RequestMapping(value = "/toedit")
+	public String toedit() {
+		return "loc/loc-edit";
+	}
+	
+	@RequestMapping(value = "/loc")
+	public String loc() {
+		return "loc/loc";
 	}
 
-	@RequestMapping(value = "/update")
-	public String update(Loc loc) {
-		locService.update(loc);
-		return "redirect:/loc/findAll";
+
+	@RequestMapping(value = "/edit")
+	@ResponseBody
+	public HandResult update(Loc loc) {
+		HandResult result = locService.update(loc);
+		return result;
 	}
 
 }

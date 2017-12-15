@@ -74,7 +74,6 @@
 	                var skuEdit = skuEditForm.find('input[name=storerkey]');
         			//回显数据
         			var data = $("#skuDg").datagrid("getSelections")[0];
-        			$("#skuEditForm").form("load",data);
         			//加载货主,并回显
         			skuEdit.combobox({
                          url : "sku/findStores",
@@ -84,7 +83,7 @@
                          editable : false,
                          panelHeight:110,
                          onLoadSuccess : function() {
-                             f.form('load', data );
+                        	 skuEditForm.form('load', data );
                          }
                      });
         		}
@@ -111,6 +110,12 @@
             		});
         	    }
         	});
+        }
+    },{
+        text:'取消',
+        iconCls:'icon-undo',
+        handler:function(){
+        	$("#skuDg").datagrid('clearChecked');
         }
     }];
 </script>

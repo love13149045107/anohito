@@ -10,9 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ggjj.zhzz.pojo.Receipt;
 import com.ggjj.zhzz.service.DictService;
 import com.ggjj.zhzz.service.ReceiptService;
+import com.ggjj.zhzz.utils.DatagridResult;
+import com.ggjj.zhzz.utils.HandResult;
+import com.ggjj.zhzz.vo.ReceiptRequestVo;
 import com.ggjj.zhzz.vo.ReceiptVo;
 import com.ggjj.zhzz.vo.ReceiptdetailVo;
 
@@ -22,49 +27,48 @@ public class ReceiptController {
 
 	@Autowired
 	private ReceiptService receiptService;
-	
-	@Autowired
-	private DictService dictService;
-
 	@RequestMapping(value = "/findAll")
-	public void findAll(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setAttribute("list", receiptService.findAll());
-		request.getRequestDispatcher("/jsp/receipt/receipt.jsp").forward(
-				request, response);
+	@ResponseBody
+	public DatagridResult findAll(ReceiptRequestVo requestVo){
+		DatagridResult result = receiptService.findAll(requestVo);
+		return result;
 
 	}
 
-	@RequestMapping("/toInsertPage")
-	public void toInsertPage(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setAttribute("list", dictService.findEmptyLocCount());
-		request.getRequestDispatcher("/jsp/receipt/insertReceipt.jsp").forward(
-				request, response);
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public HandResult delete(String ids) {
+		HandResult result = receiptService.delete(ids);
+		return result;
+	}
 
+	@RequestMapping(value = "/insert")
+	@ResponseBody
+	public HandResult insert(Receipt receipt) {
+		HandResult result = receiptService.insert(receipt);
+		return result;
+	}
+	@RequestMapping(value = "/toinsert")
+	public String toinsert() {
+		return "receipt/receipt-add";
+	}
+
+	@RequestMapping(value = "/toedit")
+	public String toedit() {
+		return "receipt/receipt-edit";
 	}
 	
-	@RequestMapping(value = "/insert")
-	public String insert(ReceiptdetailVo receiptdetailVo) {
-		receiptService.insert(receiptdetailVo);
-		if("���ջ�".equals(receiptdetailVo.getReceipt().getStatus())){
-			return "redirect:/receipt/takeGoods/"+receiptdetailVo.getStorerkey();
-		}
-		return "redirect:/receipt/findAll";
+	@RequestMapping(value = "/receipt")
+	public String receipt() {
+		return "receipt/receipt";
 	}
 
-	@RequestMapping(value = "/delete/{storerkey}")
-	public String delete(@PathVariable Integer storerkey) {
-		receiptService.delete(storerkey);
-		return "redirect:/receipt/findAll";
-	}
 
-	@RequestMapping("/takeGoods/{storerkey}")
-	public String takeGoods(@PathVariable Integer storerkey){
-		ReceiptVo receiptVo=receiptService.takeGoods(storerkey);
-		receiptService.executeTakeGoods(receiptVo);
-		return "redirect:/receipt/findAll";
-		
+	@RequestMapping(value = "/edit")
+	@ResponseBody
+	public HandResult update(Receipt receipt) {
+		HandResult result = receiptService.update(receipt);
+		return result;
 	}
 	
 }
