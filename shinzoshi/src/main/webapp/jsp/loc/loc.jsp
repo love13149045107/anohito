@@ -1,61 +1,108 @@
-<%@ page language="java" pageEncoding="utf-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title>loc</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<style type="text/css">
-		td,th{background-color:#ffffff}
-		th{text-align:left}
-		a:link,a:visited{text-decoration:none;}
-        a:hover{color:green;text-decoration:underline;}
-	</style>
-  </head>
-  	
-<body>
-<p align="right"><a href="${pageContext.request.contextPath }"><font size="2px">返回首页</font></a></p>
-<h2 style="color:red" align="center">库位管理</h2>
-<table border="0" bgcolor="#d8d8d8" width="98%" align="center" cellpadding="2" cellspacing="1">
- 	<tr>
- 	  <th>库位编码</th>
-      <th>库位类型</th>
-      <th>库位区域</th>
-      <th>堆栈限制</th>
-      <th>地面托盘数</th>
-      <th>库存数量</th>
-      <th>操作 <a href="${pageContext.request.contextPath }/jsp/loc/insertLoc.jsp" style="font-weight:normal">添加</a></th>
-    </tr>
-	<tbody id="content_table_body">
-		<c:forEach items="${list}" var="i">
-				<tr>
-					<td>
-						${i.loc}
-					</td>
-					<td>
-						${i.type}
-					</td>
-					<td>
-						${i.putawayzone}
-					</td>
-					<td>
-						${i.stacklimit}
-					</td>
-					<td>
-						${i.footprint}
-					</td>
-					<td>
-						${i.quantity}
-					</td>
-					<td>
-						<a href="${pageContext.request.contextPath }/loc/delete/${i.loc}" onclick="return confirm('确认删除吗？想好了吗？');">删除 </a>
-						<a href="${pageContext.request.contextPath }/loc/toUpdateLocPage/${i.loc}"> 修改</a>
-					</td>
-				</tr>
-			</c:forEach>
-	</tbody>
-  	</table>
-  </body>
-</html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<table class="easyui-datagrid" id="locDg" title="库位列表" 
+       data-options="singleSelect:false,fit:true,fitColumns:true,collapsible:true,pagination:true,url:'loc/findAll',method:'get',toolbar:toolbar">
+    <thead>
+        <tr>
+        	<th data-options="field:'ck',checkbox:true"></th>
+        	<th data-options="field:'loc',width:60">库位编码</th>
+            <th data-options="field:'type',width:80">库位类型</th>
+            <th data-options="field:'putawayzone',width:100">库位区域</th>
+            <th data-options="field:'stacklimit',width:60">堆栈限制</th>
+            <th data-options="field:'footprint',width:60">地面托盘数</th>
+            <th data-options="field:'quantity',width:60">库存数量</th>
+        </tr>
+    </thead>
+</table>
+
+<div id="locEditWindow" class="easyui-window" title="编辑" data-options="modal:true,closed:true,iconCls:'icon-save',href:'loc/toedit'" style="width:46%;height:60%;padding:10px;"></div>
+<div id="locAddWindow" class="easyui-window" title="新增" data-options="modal:true,closed:true,iconCls:'icon-save',href:'loc/toinsert'" style="width:46%;height:60%;padding:10px;">
+</div>
+<script>
+
+    function getSelectionsIds(){
+    	var locId = $("#locDg");
+    	var sels = locId.datagrid("getSelections");
+    	var ids = [];
+    	for(var i in sels){
+    		ids.push(sels[i].loc);
+    	}
+    	ids = ids.join(",");
+    	return ids;
+    }
+    
+    var toolbar = [{
+        text:'新增',
+        iconCls:'icon-add',
+        handler:function(){
+        	var locAddwindows = $("#locAddWindow").window({
+        		onLoad :function(){
+        			var locAddForm = locAddwindows.find('form');
+	                var locAdd = locAddForm.find('input[name=storerkey]');
+        			//加载货主
+        			locAdd.combobox({
+                         url : "loc/findStores",
+                         valueField : 'storerkey',
+                         textField : 'company',
+                         multiple : false,
+                         editable : false,
+                         panelHeight:110,
+                         
+                     });
+        			
+        		}
+        	}).window("open");
+        }
+    },{
+        text:'编辑',
+        iconCls:'icon-edit',
+        handler:function(){
+        	var ids = getSelectionsIds();
+        	if(ids.length == 0){
+        		$.messager.alert('提示','必须选择一个商品才能编辑!');
+        		return ;
+        	}
+        	if(ids.indexOf(',') > 0){
+        		$.messager.alert('提示','只能选择一个商品!');
+        		return ;
+        	}
+        	
+        	var locEditwindows = $("#locEditWindow").window({
+        		onLoad :function(){
+        			var locEditForm = locEditwindows.find('form');
+        			//回显数据
+        			var data = $("#locDg").datagrid("getSelections")[0];
+        			locEditForm.form("load",data);
+        			
+        		}
+        	}).window("open");
+        }
+    },{
+        text:'删除',
+        iconCls:'icon-cancel',
+        handler:function(){
+        	var ids = getSelectionsIds();
+        	if(ids.length == 0){
+        		$.messager.alert('提示','未选中商品!');
+        		return ;
+        	}
+        	$.messager.confirm('确认','确定删除ID为 '+ids+' 的商品吗？',function(r){
+        	    if (r){
+        	    	var params = {"ids":ids};
+                	$.post("loc/delete",params, function(data){
+            			if(data.status == 200){
+            				$.messager.alert('提示','删除商品成功!',undefined,function(){
+            					$("#locDg").datagrid("reload");
+            				});
+            			}
+            		});
+        	    }
+        	});
+        }
+    },{
+        text:'取消',
+        iconCls:'icon-undo',
+        handler:function(){
+        	$("#locDg").datagrid('clearChecked');
+        }
+    }];
+</script>
