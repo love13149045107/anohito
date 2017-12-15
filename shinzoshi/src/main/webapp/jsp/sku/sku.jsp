@@ -8,8 +8,8 @@
             <th data-options="field:'name',width:80">货品名称</th>
             <th data-options="field:'category',width:80">货品类型</th>
             <th data-options="field:'weight',width:100">重量(kg)</th>
-            <th data-options="field:'retailprice',width:60,formatter:E3.formatPrice">零售价</th>
-            <th data-options="field:'purchaseprice',width:60,formatter:E3.formatPrice">采购价</th>
+            <th data-options="field:'retailprice',width:60">零售价</th>
+            <th data-options="field:'purchaseprice',width:60">采购价</th>
             <th data-options="field:'storerkey',width:60">货主编码</th>
             <th data-options="field:'comment',width:200">备注</th>
         </tr>
